@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${judul}">Lupa Password</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #2980b9, #6dd5fa); 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        .card { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2); 
+            text-align: center; 
+            width: 350px;
+        }
+        input[type=email] {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0 20px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #2573a6;
+        }
+        .message {
+            margin-top: 15px;
+            color: green;
+            font-weight: 600;
+        }
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2 th:text="${judul}">Lupa Password</h2>
+        <form th:action="@{/forgot-password}" method="post">
+            <input type="email" name="email" placeholder="Masukkan email Anda" required />
+            <button type="submit">Kirim Link Reset</button>
+        </form>
+
+        <div th:if="${message}" class="message" th:text="${message}"></div>
+
+        <a th:href="@{/login}" class="back-link">Kembali ke Login</a>
+    </div>
+</body>
+</html>

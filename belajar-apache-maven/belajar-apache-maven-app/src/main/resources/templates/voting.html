@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voting Pemilihan Ketua</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #6dd5fa, #2980b9);
+            color: #333;
+            padding: 40px;
+            text-align: center;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            display: inline-block;
+        }
+        .card input[type=radio] {
+            margin: 10px;
+        }
+        .card button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .card button:hover {
+            background: #2573a6;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Voting Calon Ketua</h2>
+        <form th:action="@{/voting}" method="post">
+            <div>
+                <input type="radio" name="calon" value="Calon A" required /> Calon A<br/>
+                <input type="radio" name="calon" value="Calon B" required /> Calon B<br/>
+                <input type="radio" name="calon" value="Calon C" required /> Calon C<br/>
+            </div>
+            <button type="submit">Submit Vote</button>
+        </form>
+    </div>
+</body>
+</html>
