@@ -1,39 +1,53 @@
 package programmer.zaman.now.maven;
 
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import programmer.zaman.now.maven.model.Pemilih;
+import programmer.zaman.now.maven.repository.PemilihRepository;
 
 @Controller
 public class HelloController {
 
+    @Autowired
+    PemilihRepository pemilihRepository;
+
+    // Landing page / Login page
     @GetMapping("/")
     public String landingPage(Model model) {
-        model.addAttribute("judul", "Welcome to My Landing Page");
-        model.addAttribute("deskripsi", "This is a perfect landing page created with Spring Boot and Thymeleaf.");
+        model.addAttribute("judul", "Login - Pemilihan Ketua");
+        model.addAttribute("deskripsi", "Gunakan NPM dan password untuk login.");
+        model.addAttribute("error", null);
         return "index";
     }
 
-    @GetMapping("/login")
-    public String loginPage(Model model) {
-        model.addAttribute("judul", "Login Pemilihan Ketua");
-        return "login";
-    }
-
-    @PostMapping("/login")
+    // Login logic
+    @PostMapping("/")
     public String processLogin(@RequestParam String username,
                                @RequestParam String password,
+                               HttpSession session,
                                Model model) {
-        if ("admin".equals(username) && "123".equals(password)) {
-            return "redirect:/dashboard";
+        Pemilih pemilih = pemilihRepository.findByNpm(username);
+        if (pemilih != null && pemilih.getPassword().equals(password)) {
+            session.setAttribute("user", pemilih);
+
+            // Cek role user
+            if ("ADMIN".equalsIgnoreCase(pemilih.getRole())) {
+                return "redirect:/admin/crud";
+            } else {
+                return "redirect:/voting";
+            }
         }
-        model.addAttribute("judul", "Login Pemilihan Ketua");
+
+        model.addAttribute("judul", "Login - Pemilihan Ketua");
+        model.addAttribute("deskripsi", "Gunakan NPM dan password untuk login.");
         model.addAttribute("error", "Username atau password salah");
-        return "login";
+        return "index";
     }
 
+    // Lupa password
     @GetMapping("/forgot-password")
     public String showForgotPasswordForm(Model model) {
         model.addAttribute("judul", "Lupa Password");
@@ -42,14 +56,13 @@ public class HelloController {
 
     @PostMapping("/forgot-password")
     public String processForgotPassword(@RequestParam("email") String email, Model model) {
-        // TODO: Implementasi kirim email reset password
         System.out.println("Request reset password untuk: " + email);
-
         model.addAttribute("judul", "Lupa Password");
         model.addAttribute("message", "Jika email terdaftar, link reset password akan dikirim ke " + email);
         return "forgot-password";
     }
 
+    // Halaman register (belum simpan ke DB)
     @GetMapping("/register")
     public String registerPage() {
         return "register";
@@ -61,28 +74,19 @@ public class HelloController {
                                   @RequestParam String username,
                                   @RequestParam String password) {
         System.out.println("Mendaftarkan: " + nama + " - " + npm);
-        return "redirect:/login";
+        return "redirect:/";
     }
 
+    // Dashboard (jika perlu)
     @GetMapping("/dashboard")
     public String dashboard() {
         return "dashboard";
     }
 
-    @GetMapping("/voting")
-    public String votingPage() {
-    return "voting";
+    // Logout
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
-
-    @PostMapping("/voting")
-    public String processVoting(@RequestParam String calon) {
-    System.out.println("Suara diterima untuk: " + calon);
-    return "redirect:/hasil";
-    }
-
-    @GetMapping("/hasil")
-    public String hasilVoting() {
-    return "hasil";
-    }
-
 }

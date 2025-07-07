@@ -5,16 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registrasi Pemilih</title>
     <style>
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #6dd5fa, #2980b9);
-            display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .form-container { background: white; padding: 40px; border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2); max-width: 400px; width: 100%; text-align: center; }
-        .form-container h2 { margin-bottom: 20px; color: #2980b9; }
-        .form-container input { width: 100%; padding: 12px 15px; margin: 10px 0;
-            border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
-        .form-container button { width: 100%; padding: 12px; background: #2980b9; color: white; font-size: 18px;
-            border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s; }
-        .form-container button:hover { background: #2573a6; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #c0392b;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            background: #c0392b;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .form-container button:hover {
+            background: #a93226;
+        }
+        .form-container a {
+            color: #c0392b;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .form-container a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -28,7 +70,7 @@
         <button type="submit">Daftar</button>
     </form>
     <div style="margin-top:15px;">
-        <a th:href="@{/login}">Sudah punya akun? Login</a>
+        <a th:href="@{/}">Sudah punya akun? Login</a>
     </div>
 </div>
 </body>

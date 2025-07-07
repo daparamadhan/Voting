@@ -1,3 +1,14 @@
-programmer\zaman\now\maven\App.class
-programmer\zaman\now\maven\HelloController.class
+programmer\zaman\now\maven\model\Suara.class
 programmer\zaman\now\maven\MySpringBootApp.class
+programmer\zaman\now\maven\config\WebConfig.class
+programmer\zaman\now\maven\App.class
+programmer\zaman\now\maven\DataInitializer.class
+programmer\zaman\now\maven\model\Pemilih.class
+programmer\zaman\now\maven\DataInitializer$1.class
+programmer\zaman\now\maven\repository\PemilihRepository.class
+programmer\zaman\now\maven\HelloController.class
+programmer\zaman\now\maven\model\Calon.class
+programmer\zaman\now\maven\repository\CalonRepository.class
+programmer\zaman\now\maven\VotingController.class
+programmer\zaman\now\maven\DashboardController.class
+programmer\zaman\now\maven\repository\SuaraRepository.class

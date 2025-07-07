@@ -3,75 +3,260 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title th:text="${judul}">Lupa Password</title>
+    <title>Admin Dashboard</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: linear-gradient(135deg, #2980b9, #6dd5fa); 
-            height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            height: 100vh;
+            background: #f9f9f9;
+            color: #333;
         }
-        .card { 
-            background: white; 
-            padding: 40px; 
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2); 
-            text-align: center; 
-            width: 350px;
+        .sidebar {
+            width: 220px;
+            background: #c0392b;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
         }
-        input[type=email] {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0 20px 0;
+        .sidebar h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 6px;
+            display: block;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background: #a93226;
+        }
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        .dashboard-cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            flex: 1;
+            background: white;
+            padding: 20px;
             border-radius: 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .card h3 {
+            margin: 0;
+            font-size: 24px;
+            color: #c0392b;
+        }
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .btn-create { background: #c0392b; margin-bottom: 20px; }
+        .btn-create:hover { background: #a93226; }
+        .btn-edit { background: #2980b9; }
+        .btn-edit:hover { background: #2573a6; }
+        .btn-delete { background: #c0392b; }
+        .btn-delete:hover { background: #a93226; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 30px;
+        }
+        table th, table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+            vertical-align: middle;
+        }
+        table th {
+            background: #eee;
+        }
+
+        form.calon-form {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            max-width: 600px;
+        }
+        form.calon-form input[type="text"],
+        form.calon-form textarea,
+        form.calon-form input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 6px;
             border: 1px solid #ccc;
             font-size: 16px;
             box-sizing: border-box;
         }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #2980b9;
+        form.calon-form textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        form.calon-form button {
+            background: #c0392b;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 12px 20px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            font-size: 16px;
+            transition: background 0.3s;
         }
-        button:hover {
-            background: #2573a6;
+        form.calon-form button:hover {
+            background: #a93226;
+        }
+
+        img.calon-photo {
+            max-width: 80px;
+            max-height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .section-title {
+            margin-top: 40px;
+            font-size: 22px;
+            color: #c0392b;
         }
         .message {
-            margin-top: 15px;
-            color: green;
-            font-weight: 600;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 6px;
         }
-        .back-link {
-            margin-top: 20px;
-            display: inline-block;
-            color: #2980b9;
-            text-decoration: none;
-            font-weight: 600;
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
         }
-        .back-link:hover {
-            text-decoration: underline;
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2 th:text="${judul}">Lupa Password</h2>
-        <form th:action="@{/forgot-password}" method="post">
-            <input type="email" name="email" placeholder="Masukkan email Anda" required />
-            <button type="submit">Kirim Link Reset</button>
-        </form>
+<div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="#" class="active">Dashboard</a>
+    <a href="#calon">CRUD Calon</a>
+    <a href="#suara">Suara Masuk</a>
+</div>
 
-        <div th:if="${message}" class="message" th:text="${message}"></div>
-
-        <a th:href="@{/login}" class="back-link">Kembali ke Login</a>
+<div class="content">
+    <!-- Ringkasan -->
+    <div class="dashboard-cards">
+        <div class="card">
+            <h3 th:text="${listCalon.size()}">0</h3>
+            <p>Jumlah Calon</p>
+        </div>
+        <div class="card">
+            <h3 th:text="${listSuara.size()}">0</h3>
+            <p>Jumlah Suara Masuk</p>
+        </div>
     </div>
+
+    <!-- Pesan -->
+    <div th:if="${success}" class="message success" th:text="${success}"></div>
+    <div th:if="${error}" class="message error" th:text="${error}"></div>
+
+    <!-- Form Calon -->
+    <h2 class="section-title" th:text="${calon != null and calon.id == null} ? 'Tambah Calon' : 'Edit Calon'">Form Calon</h2>
+    <form th:action="@{/admin/crud/save}" th:object="${calon}" method="post" class="calon-form" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{id}" />
+        <label>Nama:</label>
+        <input type="text" th:field="*{nama}" placeholder="Masukkan nama calon" required />
+
+        <label>Visi & Misi:</label>
+        <textarea th:field="*{visiMisi}" placeholder="Tulis visi dan misi calon" required></textarea>
+
+        <label>Foto (URL opsional):</label>
+        <input type="text" th:field="*{foto}" placeholder="Masukkan URL foto calon (jika tidak upload file)" />
+
+        <label>Upload Foto:</label>
+        <input type="file" name="file" />
+
+        <button type="submit" th:text="${calon != null and calon.id == null} ? 'Simpan' : 'Update'">Simpan</button>
+    </form>
+
+    <!-- Tabel Data Calon -->
+    <h2 class="section-title" id="calon">Data Calon</h2>
+    <a href="/admin/crud" class="btn btn-create" th:if="${calon != null and calon.id != null}">+ Create New</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Nama</th>
+                <th>Visi & Misi</th>
+                <th>Jumlah Suara</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="calon : ${listCalon}">
+                <td>
+                    <img class="calon-photo"
+                         th:src="@{${#strings.startsWith(calon.foto, 'http') ? calon.foto : '/admin/crud/uploads/' + calon.foto}}"
+                         onerror="this.onerror=null;this.src='/admin/crud/uploads/default.png'" />
+                </td>
+                <td th:text="${calon.nama}">Nama Calon</td>
+                <td th:text="${calon.visiMisi}">Visi & Misi Calon</td>
+                <td th:text="${suaraPerCalon.containsKey(calon.id) ? suaraPerCalon[calon.id] : 0}">0</td>
+                <td>
+                    <a th:href="@{/admin/crud/edit/{id}(id=${calon.id})}" class="btn btn-edit">Edit</a>
+                    <a th:href="@{/admin/crud/delete/{id}(id=${calon.id})}" class="btn btn-delete"
+                       onclick="return confirm('Yakin ingin menghapus calon ini?');">Delete</a>
+                </td>
+            </tr>
+            <tr th:if="${listCalon.size() == 0}">
+                <td colspan="5" style="text-align: center;">Tidak ada calon tersedia</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Data Suara -->
+    <h2 id="suara" class="section-title">Data Suara Masuk</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama Pemilih</th>
+                <th>Nama Calon</th>
+                <th>Waktu Memilih</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="suara : ${listSuara}">
+                <td th:text="${suara.id}">1</td>
+                <td th:text="${suara.pemilih != null ? suara.pemilih.nama : 'Tidak diketahui'}">Nama Pemilih</td>
+                <td th:text="${suara.calon != null ? suara.calon.nama : 'Tidak diketahui'}">Nama Calon</td>
+                <td th:text="${#temporals.format(suara.createdAt, 'dd-MM-yyyy HH:mm')}">Waktu</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
