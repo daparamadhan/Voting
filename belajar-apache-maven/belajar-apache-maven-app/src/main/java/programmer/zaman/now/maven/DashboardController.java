@@ -33,7 +33,7 @@ public class DashboardController {
 
     @Autowired
     private SuaraRepository suaraRepository;
-
+GU
     private final Path uploadPath = Paths.get(System.getProperty("user.dir"), "uploads");
 
     @GetMapping
